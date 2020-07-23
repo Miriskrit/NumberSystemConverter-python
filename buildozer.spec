@@ -1,10 +1,9 @@
 [app]
 
 # (str) Title of your application
-title = FileApp
-
+title = SystTranslator
 # (str) Package name
-package.name = filemaanger
+package.name = systtranslator
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
@@ -65,7 +64,7 @@ orientation = portrait
 # author = © Copyright Info
 
 # change the major version of python used by the app
-osx.python_version = 3.7.7
+osx.python_version = 3
 
 # Kivy version to use
 osx.kivy_version = 1.11.1
