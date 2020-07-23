@@ -1,0 +1,447 @@
+#:kivy 1.11.1
+<ViewLb@MDCard>:
+
+<TabeLabel@Label>:
+    text_color: 1, 1, 1, 1
+    font_size:'19sp'
+    halign:'center'
+    markup:True
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, .1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+        Color:
+            rgba: .15, .15, .15, 1
+        Rectangle:
+            size: self.size[0], self.size[1]-1
+            pos: self.pos
+
+
+
+
+<RV>:
+    viewclass: 'TabeLabel'
+    RecycleBoxLayout:
+        padding:40
+        default_size: None, dp(32)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+
+
+<DarkTextField@MDTextField>:
+    text_color: 1, 1, 1, 1
+    line_color_focus: 1, 1, 1, 1
+    halign:'center'
+    mode: "fill"
+    fill_color: 0, 0, 0, .4
+    required: True
+
+
+
+<TooltipMDIconButton@MDIconButton+MDTooltip>:
+
+<Container>:
+    main_input:main_text_input
+    from_system_input:from_text_input
+    to_system_input:to_text_input
+    result:result
+    button_switch:button_switch
+
+    calc_left_input:calc_left_input
+    calc_left_s:calc_left_s
+    calc_right_input:calc_right_input
+    calc_right_s:calc_right_s
+    calc_decision:calc_decision
+    calc_result:calc_result
+    calc_result_input:calc_result_system
+
+    orientation:'vertical'
+
+    MDBoxLayout:
+        size_hint:1,.03
+        MDToolbar:
+            size_hint:1,1
+            md_bg_color: .1,.1,.1,.1
+
+    MDBottomNavigation:
+        MDBottomNavigationItem:
+            icon: 'numeric'
+            name: "screen 1"
+
+            FloatLayout:
+
+                DarkTextField:
+                    size_hint:.8,.14
+                    pos_hint: {"center_x": .5, "center_y": .88}
+                    id: main_text_input
+                    hint_text: "Введите число"
+                    halign:'center'
+                    font_size: '30sp'
+
+                MDRoundFlatButton:
+                    halign:'center'
+                    size_hint: .8, .05
+                    pos_hint: {"center_x": .5, "center_y": .75}
+                    md_bg_color: .1, .1, .1, 1
+                    text:'Перевести'
+                    theme_text_color: "Custom"
+                    text_color: 1, 1, 1, 1
+                    on_release:root.calculate()
+
+
+
+                MDIconButton:
+                    id: button2
+                    icon:'arrow-up'
+                    pos_hint: {"center_x": .09, "center_y": .65}
+                    on_release: root.change_value( 'left', 'up')
+                MDIconButton:
+                    id: button2
+                    icon:'arrow-down'
+                    pos_hint: {"center_x": .09, "center_y": .55}
+                    on_release: root.change_value( 'left', 'down')
+                DarkTextField:
+                    id: from_text_input
+                    pos_hint: {"center_x": .29, "center_y": .6}
+                    size_hint:.25,.15
+                    text:'10'
+                    hint_text: "из"
+                    font_size: '20sp'
+                    multiline: False
+                    input_type: 'number'
+                    input_filter: 'int'
+                    helper_text: "от 2 до 24"
+                    helper_text_mode: "on_focus"
+
+
+                DarkTextField:
+                    id: to_text_input
+                    pos_hint: {"center_x": .71, "center_y": .6}
+                    size_hint:.25,.15
+                    text:'2'
+                    hint_text: "в"
+                    font_size: '20sp'
+                    multiline: False
+                    input_type: 'number'
+                    input_filter: 'int'
+                    os_hint: {"center_x": .95, "center_y": .5}
+                    helper_text: "от 2 до 24"
+                    helper_text_mode: "on_focus"
+                MDIconButton:
+                    icon:'arrow-up'
+                    pos_hint: {"center_x": .91, "center_y": .65}
+                    on_release: root.change_value( 'right', 'up')
+                MDIconButton:
+                    icon:'arrow-down'
+                    pos_hint: {"center_x": .91, "center_y": .55}
+                    on_release: root.change_value( 'right', 'down')
+
+                MDIconButton:
+                    id:button_switch
+                    user_font_size:(dp(48), dp (48))
+                    icon: "arrow-expand-horizontal"
+                    pos_hint: {"center_x": .5, "center_y": .6}
+                    on_release:root.switch()
+
+                MDIconButton:
+                    id:button_switch
+                    user_font_size: "32sp"
+                    user_font_size:(dp(48), dp (48))
+                    icon: "delete-circle-outline"
+                    pos_hint: {"center_x": .9, "center_y": .42}
+                    theme_text_color: "Custom"
+                    d_bg_color: app.theme_cls.primary_color
+                    on_release:root.clean()
+                                        
+
+                MDCard:
+                    size_hint:.97,.33
+                    pos_hint: {"center_x": .5, "center_y": .2}
+                    MDLabel:
+                        id:result
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+                        font_style:'H5'
+                        halign:'center'
+                        text:'0'
+                        markup:True
+            
+
+        MDBottomNavigationItem:
+            icon: 'calculator'
+            name:'screen2'
+            MDBoxLayout:
+                orientation:'vertical'
+            FloatLayout:
+                DarkTextField:
+                    size_hint:.4,.12
+                    pos_hint: {"center_x": .25, "center_y": .9}
+                    id: calc_left_input
+                    hint_text: "Введите число"
+                    halign:'center'
+                    font_size: '20sp'
+                DarkTextField:
+                    id: calc_left_s
+                    text:'16'
+                    size_hint:.25,.13
+                    pos_hint: {"center_x": .25, "center_y": .75}
+                    hint_text:'система'
+                    halign:'center'
+
+                
+                DarkTextField:
+                    size_hint:.4,.12
+                    pos_hint: {"center_x": .75, "center_y": .9}
+                    id: calc_right_input
+                    hint_text: "Введите число"
+                    halign:'center'
+                    font_size: '20sp'
+                DarkTextField:
+                    id: calc_right_s
+                    text:'16'
+                    size_hint:.25,.13
+                    pos_hint: {"center_x": .75, "center_y": .75}
+                    hint_text:'система'
+                    halign:'center'
+   
+
+                TooltipMDIconButton:
+                    pos_hint: {"center_x": .15, "center_y": .43}
+                    icon:'minus-circle'
+                    tooltip_text: 'Вычитание'
+                    on_release:root.to_count('min')
+                TooltipMDIconButton:
+                    pos_hint: {"center_x": .30, "center_y": .43}
+                    icon:'plus-circle'
+                    tooltip_text: 'Сложение'
+                    on_release:root.to_count('pls')
+                TooltipMDIconButton:
+                    pos_hint: {"center_x": .45, "center_y": .43}
+                    icon:'multiplication'
+                    tooltip_text: 'Умножение'
+                    on_release:root.to_count('mlt')
+                TooltipMDIconButton:
+                    pos_hint: {"center_x": .60, "center_y": .43}
+                    icon:'division'
+                    tooltip_text: 'Деление'
+                    on_release:root.to_count('del')
+                TooltipMDIconButton:
+                    pos_hint: {"center_x": .85, "center_y": .43}
+                    icon:'equal'
+                    on_release:root.calc_repeat()
+
+                MDLabel:
+                    theme_text_color: "Custom"
+                    pos_hint: {"center_x": .5, "center_y": .65}
+                    text_color: 1, 1, 1, 1
+                    halign:'center'
+                    text:'введите систему счиления ответа'
+                    font_size:'10sp'
+                MDIconButton:
+                    icon:'arrow-left'
+                    pos_hint: {"center_x": .3, "center_y": .55}
+                    on_release: root.calc_change_value(-1)
+                MDIconButton:
+                    icon:'arrow-right'
+                    pos_hint: {"center_x": .7, "center_y": .55}
+                    on_release: root.calc_change_value(1)
+
+                DarkTextField:
+                    id: calc_result_system
+                    text:'2'
+                    size_hint:.25,.11
+                    pos_hint: {"center_x": .5, "center_y": .55}
+                    hint_text:'система'
+                    halign:'center'
+
+                
+                MDIconButton:
+                    user_font_size: "32sp"
+                    user_font_size:(dp(48), dp (48))
+                    icon: "delete-circle-outline"
+                    pos_hint: {"center_x": .9, "center_y": .24}
+                    theme_text_color: "Custom"
+                    d_bg_color: app.theme_cls.primary_color
+                    on_release:root.calc_clean()
+
+
+                MDCard:
+                    size_hint:.95,.1
+                    pos_hint: {"center_x": .5, "center_y": .32}
+                    MDLabel:
+                        id:calc_decision
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+                        font_style:'H5'
+                        halign:'center'
+                        text:'0'
+                        markup:True
+                MDCard:
+                    size_hint:.97,.2
+                    pos_hint: {"center_x": .5, "center_y": .11}
+                    MDLabel:
+                        id:calc_result
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+                        font_style:'H5'
+                        halign:'center'
+                        text:'0'
+                        markup:True
+
+
+
+
+
+        MDBottomNavigationItem:
+            icon: 'table-of-contents'
+            name:'screen3'
+            MDGridLayout:
+                rows:17
+                cols:3
+                TabeLabel:
+                    font_size:'20sp'
+                    text:'(10)'
+                    canvas.before:
+                        Color:
+                            rgba: .1, .1, .1, 1
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
+
+                TabeLabel:
+                    font_size:'20sp'
+                    text:'(8)'
+                    canvas.before:
+                        Color:
+                            rgba: .1, .1, .1, 1
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
+
+                TabeLabel:
+                    font_size:'20sp'
+                    text:'(16)'
+                    canvas.before:
+                        Color:
+                            rgba: .1, .1, .1, 1
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
+
+                TabeLabel:
+                    text:'0'
+                TabeLabel:
+                    text:'000'
+                TabeLabel:
+                    text:'0000'
+
+                TabeLabel:
+                    text:'1'
+                TabeLabel:
+                    text:'001'
+                TabeLabel:
+                    text:'0001'
+
+                TabeLabel:
+                    text:'2'
+                TabeLabel:
+                    text:'010'
+                TabeLabel:
+                    text:'0010'
+
+                TabeLabel:
+                    text:'3'
+                TabeLabel:
+                    text:'011'
+                TabeLabel:
+                    text:'0011'
+
+
+                TabeLabel:
+                    text:'4'
+                TabeLabel:
+                    text:'100'
+                TabeLabel:
+                    text:'0100'
+                    
+                TabeLabel:
+                    text:'5'
+                TabeLabel:
+                    text:'101'
+                TabeLabel:
+                    text:'0101'
+
+                TabeLabel:
+                    text:'6'
+                TabeLabel:
+                    text:'110'
+                TabeLabel:
+                    text:'0110'
+
+                TabeLabel:
+                    text:'7'
+                TabeLabel:
+                    text:'111'
+                TabeLabel:
+                    text:'0111'
+
+                TabeLabel:
+                    text:'8'
+                TabeLabel:
+                    text:''
+                TabeLabel:
+                    text:'1000'
+                TabeLabel:
+
+                    text:'9'
+                TabeLabel:
+                    text:''
+                TabeLabel:
+                    text:'1001'
+
+                TabeLabel:
+                    text:'A[sup]10[/sup]'
+                TabeLabel:
+                    text:''
+                TabeLabel:
+                    text:'1010'
+
+                TabeLabel:
+                    text:'B[sup]11[/sup]'
+                TabeLabel:
+                    text:''
+                TabeLabel:
+                    text:'1011'
+
+                TabeLabel:
+                    text:'C[sup]12[/sup]'
+                TabeLabel:
+                    text:''
+                TabeLabel:
+                    text:'1100'
+
+                TabeLabel:
+                    text:'D[sup]13[/sup]'
+                TabeLabel:
+                    text:''
+                TabeLabel:
+                    text:'1101'
+
+                TabeLabel:
+                    text:'E[sup]14[/sup]'
+                TabeLabel:
+                    text:''
+                TabeLabel:
+                    text:'1110'
+
+                TabeLabel:
+                    text:'F[sup]15[/sup]'
+                TabeLabel:
+                    text:''
+                TabeLabel:
+                    text:'1111'
