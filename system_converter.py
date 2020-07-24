@@ -7,7 +7,7 @@ class NumberSystemConverter:
             self.s = int(system)
             self.t = int(to_system)
         except:
-            return '[color=ff3333]Ошибка при вводе[/color]'
+            return '[color=ff3333]Input Error[/color]'
 
         Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         Numbers = '0123456789.'
@@ -24,12 +24,12 @@ class NumberSystemConverter:
             if i in Numbers:
                 if i != '.':
                     if int(i) >= self.s:
-                        return '[color=ff3333]Вы ввели неверное число\n или систему счисления[/color]'
+                        return '[color=ff3333]Invalid number\n or system input[/color]'
             elif i in Alphabet:
                 if Alphabet_dict[i] >= self.s:
-                    return '[color=ff3333]Вы ввели неверное число\n или систему счисления[/color]'
+                    return '[color=ff3333]Invalid number\n or system input[/color]'
             else:
-                return '[color=ff3333]Некорректный ввод[/color]'
+                return '[color=ff3333]Invalid input[/color]'
 
         def convert():
             new_x = 0
