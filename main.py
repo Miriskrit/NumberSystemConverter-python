@@ -30,7 +30,6 @@ class Container(BoxLayout):
     calc_result_label_label = ObjectProperty()
     calc_result_system_input = ObjectProperty()
 
-
     def _format_number(self, text_number, to_system):
         '''converting the program's operation to a clear number'''
 
@@ -138,7 +137,7 @@ class Container(BoxLayout):
                 t = int(t)
                 s = int(s)
                 if (int(t) < 2 or int(t) > MAX_SYSTEM) or (int(s) < 2 or int(s) > MAX_SYSTEM):
-                    self.converter_result_label.text = f'[color=ff3333]Доступные системы счиления\nот 2 до {MAX_SYSTEM }[/color]'
+                    self.converter_result_label.text = f'[color=ff3333]aviable systef \nfrom 2 to {MAX_SYSTEM }[/color]'
                 if int(t) < 2:
                     self.converter_to_numeral_system_input.text = '2'
                 elif int(t) > MAX_SYSTEM:
@@ -169,9 +168,9 @@ class Container(BoxLayout):
                         self.converter_result_label.text = res
                 except Exception as exc:
                     print(exc)
-                    self.converter_result_label.text = '[color=ff3333]Ошибка[/color]'
+                    self.converter_result_label.text = '[color=ff3333]Error[/color]'
             else:
-                self.converter_result_label.text = '[color=ff3333]Вы не ввели число[/color]'
+                self.converter_result_label.text = '[color=ff3333]Enter a number![/color]'
 
         make_mathematic()
 
@@ -224,9 +223,9 @@ class Container(BoxLayout):
             def count_decimal_result(mode):
                 '''converting both values to the 10'system and count'''
                 first_decimal_num = converter.make_translation(self.calc_left_input.text.upper(),
-                                                                int(self.calc_left_system_input.text), 10)
+                                                               int(self.calc_left_system_input.text), 10)
                 second_decimal_num = converter.make_translation(self.calc_right_input.text.upper(),
-                                                                 int(self.calc_right_system_input.text), 10)
+                                                                int(self.calc_right_system_input.text), 10)
 
                 if '.' in first_decimal_num or '.' in second_decimal_num:
                     isfloat = True
@@ -269,7 +268,7 @@ class Container(BoxLayout):
                     self.calc_result_label.text = '0'
             except Exception as exc:
                 print(exc)
-                self.calc_result_label.text = '[color=ff3333]Ошибка[/color]'
+                self.calc_result_label.text = '[color=ff3333]Error[/color]'
 
         is_correct_input()
         make_mathematic(mode)
