@@ -7,13 +7,13 @@
     markup:True
     canvas.before:
         Color:
-            rgba: 1, 1, 1, .1
+            rgba: app.theme_cls.bg_light
         Rectangle:
             size: self.size
             pos: self.pos
 
         Color:
-            rgba: .15, .15, .15, 1
+            rgba: app.theme_cls.bg_normal
         Rectangle:
             size: self.size[0], self.size[1]-1
             pos: self.pos
@@ -174,7 +174,7 @@
                     font_size: '20sp'
                 DarkTextField:
                     id: calc_left_system_input
-                    text:'16'
+                    text:'8'
                     size_hint:.25,.13
                     pos_hint: {"center_x": .25, "center_y": .75}
                     hint_text:'система'
@@ -190,7 +190,7 @@
                     font_size: '20sp'
                 DarkTextField:
                     id: calc_right_system_input
-                    text:'16'
+                    text:'2'
                     size_hint:.25,.13
                     pos_hint: {"center_x": .75, "center_y": .75}
                     hint_text:'система'
@@ -230,11 +230,11 @@
                     text:'введите систему счиления ответа'
                     font_size:'10sp'
                 MDIconButton:
-                    icon:'arrow-left'
+                    icon:'arrow-down'
                     pos_hint: {"center_x": .3, "center_y": .55}
                     on_release: root.calc_result_system_input_change_value(-1)
                 MDIconButton:
-                    icon:'arrow-right'
+                    icon:'arrow-up'
                     pos_hint: {"center_x": .7, "center_y": .55}
                     on_release: root.calc_result_system_input_change_value(1)
 

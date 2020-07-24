@@ -13,7 +13,7 @@ from kivy.core.clipboard import Clipboard
 
 from translate import NumberSystemTranslation
 Config.set('kivy', 'keyboard_mode', 'systemanddock')
-
+MAX_SYSTEM = 36
 
 class Container(BoxLayout):
     translator_translator_main_input = ObjectProperty()
@@ -35,7 +35,6 @@ class Container(BoxLayout):
         def check_minus(text_number):
             '''checks whether the number is negative'''
             if text_number[0] == '-':
-                text_number = text_number[1:]
                 return True
             else:
                 return False
@@ -49,8 +48,10 @@ class Container(BoxLayout):
 
         def complete_formating(text_number, isminus, step):
             '''placement of commas and minus sign'''
+            if isminus:
+                text_number = text_number[1:]
             res = ''
-            if len(text_number) > step and text_number.find('.') == -1:
+            if len(text_number) > step+2 and text_number.find('.') == -1:
                 text_number = text_number[::-1]
                 formatingtext = ''
                 for i in range(len(text_number)):
@@ -102,14 +103,14 @@ class Container(BoxLayout):
             value_right_input = 8
 
         if side == 'left':
-            if value == 'up' and value_left_input < 24:
+            if value == 'up' and value_left_input < MAX_SYSTEM :
                 self.translator_from_numeral_system_input.text = str(
                     value_left_input+1)
             elif value == 'down' and value_left_input > 2:
                 self.translator_from_numeral_system_input.text = str(
                     value_left_input-1)
         else:
-            if value == 'up' and value_right_input < 24:
+            if value == 'up' and value_right_input < MAX_SYSTEM :
                 self.translator_to_numeral_system_input.text = str(
                     value_right_input+1)
             elif value == 'down' and value_right_input > 2:
@@ -134,17 +135,17 @@ class Container(BoxLayout):
             try:
                 t = int(t)
                 s = int(s)
-                if (int(t) < 2 or int(t) > 24) or (int(s) < 2 or int(s) > 24):
-                    self.translator_result_label.text = '[color=ff3333]Доступные системы счиления\nот 2 до 24[/color]'
+                if (int(t) < 2 or int(t) > MAX_SYSTEM ) or (int(s) < 2 or int(s) > MAX_SYSTEM ):
+                    self.translator_result_label.text = f'[color=ff3333]Доступные системы счиления\nот 2 до {MAX_SYSTEM }[/color]'
                 if int(t) < 2:
                     self.translator_to_numeral_system_input.text = '2'
-                elif int(t) > 24:
-                    self.translator_to_numeral_system_input.text = '24'
+                elif int(t) > MAX_SYSTEM :
+                    self.translator_to_numeral_system_input.text = str(MAX_SYSTEM)
 
                 if int(s) < 2:
                     self.translator_from_numeral_system_input.text = '2'
-                elif int(s) > 24:
-                    self.translator_from_numeral_system_input.text = '24'
+                elif int(s) > MAX_SYSTEM :
+                    self.translator_from_numeral_system_input.text = str(MAX_SYSTEM)
                 return True
             except:
                 return False
@@ -155,8 +156,12 @@ class Container(BoxLayout):
             to_system = self.translator_to_numeral_system_input.text
             if is_correct_input(to_system, from_system):
                 try:
-                    self.translator_result_label.text = self._format_number(NumberSystemTranslation().make_translation(
-                        user_number, from_system, to_system), to_system) + '[sub]({})[/sub]'.format(to_system)
+                    res = NumberSystemTranslation().make_translation(
+                        user_number, from_system, to_system)
+                    if res.find('[') == -1:
+                        self.translator_result_label.text = self._format_number(res, to_system) + '[sub]({})[/sub]'.format(to_system)
+                    else: 
+                        self.translator_result_label.text = res
                 except Exception as exc:
                     print(exc)
                     self.translator_result_label.text = '[color=ff3333]Ошибка[/color]'
@@ -179,8 +184,8 @@ class Container(BoxLayout):
                     i = int(txtinput.text)
                     if i < 2:
                         txtinput.text = '2'
-                    if i > 24:
-                        txtinput.text = '24'
+                    if i > MAX_SYSTEM :
+                        txtinput.text = str(MAX_SYSTEM)
                 except:
                     txtinput.text = '10'
                 if self.calc_left_input.text == '':
@@ -297,6 +302,8 @@ class MyApp(MDApp):
     def build(self):
         self.icon = 'myicon.png'
         self.theme_cls.theme_style = "Dark"
+        self.theme_cls.primary_hue = "A100"
+        self.theme_cls.primary_palette = "LightBlue"
         return Container()
 
 
