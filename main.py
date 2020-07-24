@@ -29,75 +29,108 @@ class Container(BoxLayout):
     calc_result_label_label = ObjectProperty()
     calc_result_system_input = ObjectProperty()
 
-    last_do = 'pls'
+    def _format_number(self, text_number, to_system):
+        '''converting the program's operation to a clear number'''
 
-    def format_text(self, text, t):
-        if text[0] == '-':
-            text = text[1:]
-            isminus = True
-        else:
-            isminus = False
-        if int(t) == 10:
-            step = 3
-        else:
-            step = 4
-        if len(text) > step and text.find('.') == -1:
-            text = text[::-1]
-            formatingtext = ''
-            for i in range(len(text)):
-                if i % step == 0:
-                    formatingtext += ','
-                formatingtext += text[i]
+        def check_minus(text_number):
+            '''checks whether the number is negative'''
+            if text_number[0] == '-':
+                text_number = text_number[1:]
+                return True
+            else:
+                return False
+
+        def definition_of_the_step(system):
+            '''specifies how many characters will be separated by commas'''
+            if system == 10:
+                return 3
+            else:
+                return 4
+
+        def complete_formating(text_number, isminus, step):
+            '''placement of commas and minus sign'''
+            res = ''
+            if len(text_number) > step and text_number.find('.') == -1:
+                text_number = text_number[::-1]
+                formatingtext = ''
+                for i in range(len(text_number)):
+                    if i % step == 0:
+                        formatingtext += ','
+                    formatingtext += text_number[i]
+                res = formatingtext[::-1][:-1]
+            elif text_number.find('.') != -1:
+                # floating point numbers do not contain commas
+                if text_number[0] == '.':
+                    text_number = '0' + text_number
+                invert_number = text_number[::-1]
+                split_nulls = 0
+                for s in invert_number:
+                    if s == '0':
+                        split_nulls += 1
+                    else:
+                        break
+                res = invert_number[split_nulls:][::-1]
+            else:
+                res = text_number
+
+            if res[-1] == '.':
+                res = res[:-1]
             if isminus:
-                return '-' + formatingtext[::-1][:-1]
-            return formatingtext[::-1][:-1]
-        else:
-            if text[0] == '.':
-                text = '0' + text
-            if isminus:
-                return '-' + text
-            return text
+                return '-' + res
+            else:
+                return res
 
-    def change_value(self, side, value):
-        try:
-            i_left = int(self.translator_from_numeral_system_input.text)
-        except:
-            i_left = 8
+        return complete_formating(text_number, check_minus(text_number), definition_of_the_step(int(to_system)))
 
+    #----------------------#
+    #-screen1 "translator'-#
+    #----------------------#
+
+    def translator_system_input_change_value(self, side, value):
+        '''increase or decrease the system input value'''
+
+        # if fields is empty
         try:
-            i_right = int(self.translator_to_numeral_system_input.text)
+            value_left_input = int(
+                self.translator_from_numeral_system_input.text)
         except:
-            i_right = 8
+            value_left_input = 8
+        try:
+            value_right_input = int(
+                self.translator_to_numeral_system_input.text)
+        except:
+            value_right_input = 8
 
         if side == 'left':
-            if value == 'up' and i_left < 24:
-                self.translator_from_numeral_system_input.text = str(i_left+1)
-            elif value == 'down' and i_left > 2:
-                self.translator_from_numeral_system_input.text = str(i_left-1)
+            if value == 'up' and value_left_input < 24:
+                self.translator_from_numeral_system_input.text = str(
+                    value_left_input+1)
+            elif value == 'down' and value_left_input > 2:
+                self.translator_from_numeral_system_input.text = str(
+                    value_left_input-1)
         else:
-            if value == 'up' and i_right < 24:
-                self.translator_to_numeral_system_input.text = str(i_right+1)
-            elif value == 'down' and i_right > 2:
-                self.translator_to_numeral_system_input.text = str(i_right-1)
+            if value == 'up' and value_right_input < 24:
+                self.translator_to_numeral_system_input.text = str(
+                    value_right_input+1)
+            elif value == 'down' and value_right_input > 2:
+                self.translator_to_numeral_system_input.text = str(
+                    value_right_input-1)
 
-    #
-
-    def switch(self):
+    def translator_button_switch_values(self):
+        '''swaps input values'''
         self.translator_from_numeral_system_input.text, self.translator_to_numeral_system_input.text = self.translator_to_numeral_system_input.text, self.translator_from_numeral_system_input.text
 
-    #
-
-    def clean(self):
+    def translator_clean(self):
         self.translator_from_numeral_system_input.text = ''
         self.translator_to_numeral_system_input.text = ''
         self.translator_main_input.text = ''
         self.translator_result_label.text = ''
 
-    #
-
-    def calculate(self):
+    def translator_calculate(self):
+        '''transfer to another number system'''
 
         def is_correct_input(t, s):
+            '''error output for incorrect input'''
             try:
                 t = int(t)
                 s = int(s)
@@ -122,21 +155,25 @@ class Container(BoxLayout):
             to_system = self.translator_to_numeral_system_input.text
             if is_correct_input(to_system, from_system):
                 try:
-                    text = NumberSystemTranslation().make_translation(
-                        user_number, from_system, to_system)
-                    if text.isdigit():
-                        text = self.format_text(
-                            text, to_system) + '[sub]({})[/sub]'.format(to_system)
-                    self.translator_result_label.text = text
-                except:
+                    self.translator_result_label.text = self._format_number(NumberSystemTranslation().make_translation(
+                        user_number, from_system, to_system), to_system) + '[sub]({})[/sub]'.format(to_system)
+                except Exception as exc:
+                    print(exc)
                     self.translator_result_label.text = '[color=ff3333]Ошибка[/color]'
             else:
                 self.translator_result_label.text = '[color=ff3333]Вы не ввели число[/color]'
+
         make_mathematic()
 
-    def to_count(self, mode):
+    #----------------------#
+    #-screen2 "calculator'-#
+    #----------------------#
+    last_do = 'pls'
 
-        def calc_is_correct_input():
+    def calc_calculate(self, mode):
+
+        def is_correct_input():
+            '''substitution of base values for incorrect input'''
             for txtinput in (self.calc_left_system_input, self.calc_right_system_input, self.calc_result_system_input):
                 try:
                     i = int(txtinput.text)
@@ -151,90 +188,88 @@ class Container(BoxLayout):
                 if self.calc_right_input.text == '':
                     self.calc_right_input.text = '1'
 
-        def convert_both_to_ten():
-            c = NumberSystemTranslation()
-            return c.make_translation(self.calc_left_input.text.upper(), int(self.calc_left_system_input.text), 10), \
-                c.make_translation(self.calc_right_input.text.upper(), int(
-                    self.calc_right_system_input.text), 10)
+        def make_mathematic(mode):
+            # if the response is 0, it will not be convert to another system
+            number_is_null = False
+            result_system = self.calc_result_system_input.text
+            Translator = NumberSystemTranslation()
 
-        def make_mathematic():
-
-            def mathematical_operation(name, isfloat, first_num, second_num):
+            def do_mathematical_operation(name, isfloat, first_num, second_num):
+                self.last_do = name
                 if name == 'min':
                     res = float(first_num)-float(second_num)
-
                 elif name == 'pls':
                     res = float(first_num)+float(second_num)
-
                 elif name == 'mlt':
                     res = float(first_num)*float(second_num)
-
                 else:
                     res = round(float(first_num)/float(second_num), 5)
                     if res == int(res):
                         res = int(res)
-
-                self.last_do = name
-
                 if not isfloat:
                     return int(res)
                 else:
                     return res
 
-            number_is_null = False
-            final_syst = self.calc_result_system_input.text
-            first_num, second_num = convert_both_to_ten()
-            c = NumberSystemTranslation()
-            try:
-                first_num = c.make_translation(self.calc_left_input.text.upper(),
-                                               int(self.calc_left_system_input.text), 10)
-                second_num = c.make_translation(self.calc_right_input.text.upper(),
-                                                int(self.calc_right_system_input.text), 10)
+            def count_decimal_result(mode):
+                '''converting both values to the 10'system and count'''
+                first_decimal_num = Translator.make_translation(self.calc_left_input.text.upper(),
+                                                                int(self.calc_left_system_input.text), 10)
+                second_decimal_num = Translator.make_translation(self.calc_right_input.text.upper(),
+                                                                 int(self.calc_right_system_input.text), 10)
 
-                if '.' in first_num or '.' in second_num:
+                if '.' in first_decimal_num or '.' in second_decimal_num:
                     isfloat = True
                 else:
                     isfloat = False
 
-                ten_system_res = mathematical_operation(
-                    mode, isfloat, first_num, second_num)
+                return (do_mathematical_operation(
+                    mode, isfloat, first_decimal_num, second_decimal_num),
+                    first_decimal_num,
+                    second_decimal_num)
+
+            def calc_before_result_text(modes, num1, num2, system):
+                self.calc_before_result_label.text = f'{num1}[sub](10)[/sub] {modes.get(mode)} {num2}[sub](10)[/sub] = {system}[sub](10)[/sub]'
+
+            try:
+                ten_system_res, first_decimal_num, second_decimal_num = count_decimal_result(
+                    mode)
                 if ten_system_res == 0:
                     number_is_null = True
 
-                modes = {'min': '-', 'pls': '+', 'mlt': '*', 'del': '/'}
-                self.calc_before_result_label.text = f'{first_num}[sub](10)[/sub] {modes.get(mode)} {second_num}[sub](10)[/sub] = {ten_system_res}[sub](10)[/sub]'
+                # filling out the label before_result
+                calc_before_result_text({'min': '-', 'pls': '+', 'mlt': '*', 'del': '/'},
+                                        first_decimal_num, second_decimal_num, ten_system_res)
 
                 if not number_is_null:
-                    final_res = str(c.make_translation(
-                        str(ten_system_res), 10, int(final_syst)))
-                    if isfloat:
-                        final_res = float(final_res)
-                    else:
-                        final_res = int(final_res)
+                    final_res = Translator.make_translation(
+                        str(ten_system_res), 10, int(result_system))
 
                     if str(final_res).find('[') == -1:
-                        self.calc_result_label.text = self.format_text(
-                            str(final_res), int(final_syst)) + '[sub]({})[/sub]'.format(final_syst)
+                        # if not error block, which started with [
+                        final_res = self._format_number(
+                            final_res, int(self.calc_result_system_input.text))
+                        self.calc_result_label.text = self._format_number(
+                            str(final_res), int(result_system)) + '[sub]({})[/sub]'.format(result_system)
                     else:
-                        # если обнаружена ошибка
+                        # print error
                         self.calc_result_label.text = final_res
                 else:
+                    # if 0
                     self.calc_result_label.text = '0'
             except Exception as exc:
                 print(exc)
                 self.calc_result_label.text = '[color=ff3333]Ошибка[/color]'
 
-        calc_is_correct_input()
-        make_mathematic()
-
-    #
+        is_correct_input()
+        make_mathematic(mode)
 
     def calc_repeat(self):
-        self.to_count(self.last_do)
+        '''repeat the last action on the "equals" button'''
+        self.calc_calculate(self.last_do)
 
-    #
-
-    def calc_change_value(self, value):
+    def calc_result_system_input_change_value(self, value):
+        '''increase or decrease the system input value'''
         try:
             i = int(self.calc_result_system_input.text)
         except:
@@ -246,8 +281,6 @@ class Container(BoxLayout):
         elif i < 25 and value < 0:
             self.calc_result_system_input.text = str(i - 1)
             self.calc_repeat()
-
-    #
 
     def calc_clean(self):
         self.calc_result_system_input.text = ''

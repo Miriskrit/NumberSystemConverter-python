@@ -84,16 +84,16 @@
                     text:'Перевести'
                     theme_text_color: "Custom"
                     text_color: 1, 1, 1, 1
-                    on_release:root.calculate()
+                    on_release:root.translator_calculate()
 
                 MDIconButton:
                     icon:'arrow-up'
                     pos_hint: {"center_x": .09, "center_y": .65}
-                    on_release: root.change_value( 'left', 'up')
+                    on_release: root.translator_system_input_change_value( 'left', 'up')
                 MDIconButton:
                     icon:'arrow-down'
                     pos_hint: {"center_x": .09, "center_y": .55}
-                    on_release: root.change_value( 'left', 'down')
+                    on_release: root.translator_system_input_change_value( 'left', 'down')
                 DarkTextField:
                     id: translator_from_numeral_system_input
                     pos_hint: {"center_x": .29, "center_y": .6}
@@ -124,17 +124,17 @@
                 MDIconButton:
                     icon:'arrow-up'
                     pos_hint: {"center_x": .91, "center_y": .65}
-                    on_release: root.change_value( 'right', 'up')
+                    on_release: root.translator_system_input_change_value( 'right', 'up')
                 MDIconButton:
                     icon:'arrow-down'
                     pos_hint: {"center_x": .91, "center_y": .55}
-                    on_release: root.change_value( 'right', 'down')
+                    on_release: root.translator_system_input_change_value( 'right', 'down')
 
                 MDIconButton:
                     user_font_size:(dp(48), dp (48))
                     icon: "arrow-expand-horizontal"
                     pos_hint: {"center_x": .5, "center_y": .6}
-                    on_release:root.switch()
+                    on_release:root.translator_button_switch_values()
 
                 MDIconButton:
                     user_font_size: "32sp"
@@ -143,7 +143,7 @@
                     pos_hint: {"center_x": .9, "center_y": .42}
                     theme_text_color: "Custom"
                     d_bg_color: app.theme_cls.primary_color
-                    on_release:root.clean()
+                    on_release:root.translator_clean()
                                         
 
                 MDCard:
@@ -201,22 +201,22 @@
                     pos_hint: {"center_x": .15, "center_y": .43}
                     icon:'minus-circle'
                     tooltip_text: 'Вычитание'
-                    on_release:root.to_count('min')
+                    on_release:root.calc_calculate('min')
                 TooltipMDIconButton:
                     pos_hint: {"center_x": .30, "center_y": .43}
                     icon:'plus-circle'
                     tooltip_text: 'Сложение'
-                    on_release:root.to_count('pls')
+                    on_release:root.calc_calculate('pls')
                 TooltipMDIconButton:
                     pos_hint: {"center_x": .45, "center_y": .43}
                     icon:'multiplication'
                     tooltip_text: 'Умножение'
-                    on_release:root.to_count('mlt')
+                    on_release:root.calc_calculate('mlt')
                 TooltipMDIconButton:
                     pos_hint: {"center_x": .60, "center_y": .43}
                     icon:'division'
                     tooltip_text: 'Деление'
-                    on_release:root.to_count('del')
+                    on_release:root.calc_calculate('del')
                 TooltipMDIconButton:
                     pos_hint: {"center_x": .85, "center_y": .43}
                     icon:'equal'
@@ -232,11 +232,11 @@
                 MDIconButton:
                     icon:'arrow-left'
                     pos_hint: {"center_x": .3, "center_y": .55}
-                    on_release: root.calc_change_value(-1)
+                    on_release: root.calc_result_system_input_change_value(-1)
                 MDIconButton:
                     icon:'arrow-right'
                     pos_hint: {"center_x": .7, "center_y": .55}
-                    on_release: root.calc_change_value(1)
+                    on_release: root.calc_result_system_input_change_value(1)
 
                 DarkTextField:
                     id: calc_result_system_input
