@@ -30,6 +30,7 @@ class Container(BoxLayout):
     calc_result_label_label = ObjectProperty()
     calc_result_system_input = ObjectProperty()
 
+
     def _format_number(self, text_number, to_system):
         '''converting the program's operation to a clear number'''
 

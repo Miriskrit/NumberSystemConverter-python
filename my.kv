@@ -74,7 +74,7 @@
                     id: converter_main_input
                     size_hint:.8,.14
                     pos_hint: {"center_x": .5, "center_y": .88}
-                    hint_text: "Введите число"
+                    hint_text: "Enter number"
                     halign:'center'
                     font_size: '30sp'
 
@@ -83,7 +83,7 @@
                     size_hint: .8, .05
                     pos_hint: {"center_x": .5, "center_y": .75}
                     md_bg_color: .1, .1, .1, 1
-                    text:'Перевести'
+                    text:'Convert'
                     theme_text_color: "Custom"
                     text_color: 1, 1, 1, 1
                     on_release:root.converter_calculate()
@@ -101,12 +101,12 @@
                     pos_hint: {"center_x": .29, "center_y": .6}
                     size_hint:.25,.15
                     text:'10'
-                    hint_text: "из"
+                    hint_text: "from"
                     font_size: '20sp'
                     multiline: False
                     input_type: 'number'
                     input_filter: 'int'
-                    helper_text: "от 2 до 24"
+                    helper_text: "2 .. 36"
                     helper_text_mode: "on_focus"
 
 
@@ -115,13 +115,13 @@
                     pos_hint: {"center_x": .71, "center_y": .6}
                     size_hint:.25,.15
                     text:'2'
-                    hint_text: "в"
+                    hint_text: "to"
                     font_size: '20sp'
                     multiline: False
                     input_type: 'number'
                     input_filter: 'int'
                     os_hint: {"center_x": .95, "center_y": .5}
-                    helper_text: "от 2 до 24"
+                    helper_text: "2 .. 36"
                     helper_text_mode: "on_focus"
                 MDIconButton:
                     icon:'arrow-up'
@@ -171,7 +171,7 @@
                     id: calc_left_input
                     size_hint:.4,.12
                     pos_hint: {"center_x": .25, "center_y": .9}
-                    hint_text: "Введите число"
+                    hint_text: "Enter number"
                     halign:'center'
                     font_size: '20sp'
                 DarkTextField:
@@ -179,7 +179,7 @@
                     text:'8'
                     size_hint:.25,.13
                     pos_hint: {"center_x": .25, "center_y": .75}
-                    hint_text:'система'
+                    hint_text:'system'
                     halign:'center'
 
                 
@@ -187,7 +187,7 @@
                     id: calc_right_input
                     size_hint:.4,.12
                     pos_hint: {"center_x": .75, "center_y": .9}
-                    hint_text: "Введите число"
+                    hint_text: "Enter number"
                     halign:'center'
                     font_size: '20sp'
                 DarkTextField:
@@ -195,32 +195,33 @@
                     text:'2'
                     size_hint:.25,.13
                     pos_hint: {"center_x": .75, "center_y": .75}
-                    hint_text:'система'
+                    hint_text:'system'
                     halign:'center'
    
 
                 TooltipMDIconButton:
                     pos_hint: {"center_x": .15, "center_y": .43}
                     icon:'minus-circle'
-                    tooltip_text: 'Вычитание'
+                    tooltip_text: 'subtracting'
                     on_release:root.calc_calculate('min')
                 TooltipMDIconButton:
                     pos_hint: {"center_x": .30, "center_y": .43}
                     icon:'plus-circle'
-                    tooltip_text: 'Сложение'
+                    tooltip_text: 'Addition'
                     on_release:root.calc_calculate('pls')
                 TooltipMDIconButton:
                     pos_hint: {"center_x": .45, "center_y": .43}
                     icon:'multiplication'
-                    tooltip_text: 'Умножение'
+                    tooltip_text: 'Multiplication'
                     on_release:root.calc_calculate('mlt')
                 TooltipMDIconButton:
                     pos_hint: {"center_x": .60, "center_y": .43}
                     icon:'division'
-                    tooltip_text: 'Деление'
+                    tooltip_text: 'Division'
                     on_release:root.calc_calculate('del')
                 TooltipMDIconButton:
                     pos_hint: {"center_x": .85, "center_y": .43}
+                    tooltip_text: 'Repeat'
                     icon:'equal'
                     on_release:root.calc_repeat()
 
@@ -229,7 +230,7 @@
                     pos_hint: {"center_x": .5, "center_y": .65}
                     text_color: 1, 1, 1, 1
                     halign:'center'
-                    text:'введите систему счиления ответа'
+                    text:'Enter system'
                     font_size:'10sp'
                 MDIconButton:
                     icon:'arrow-down'
@@ -245,7 +246,7 @@
                     text:'2'
                     size_hint:.25,.11
                     pos_hint: {"center_x": .5, "center_y": .55}
-                    hint_text:'система'
+                    hint_text:'system'
                     halign:'center'
 
                 
