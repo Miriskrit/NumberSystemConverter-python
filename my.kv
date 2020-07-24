@@ -43,10 +43,10 @@
 
 
 <Container>:
-    translator_main_input:translator_main_input
-    translator_from_numeral_system_input:translator_from_numeral_system_input
-    translator_to_numeral_system_input:translator_to_numeral_system_input
-    translator_result_label:translator_result_label
+    converter_main_input:converter_main_input
+    converter_from_numeral_system_input:converter_from_numeral_system_input
+    converter_to_numeral_system_input:converter_to_numeral_system_input
+    converter_result_label:converter_result_label
 
     calc_left_input:calc_left_input
     calc_left_system_input:calc_left_system_input
@@ -71,7 +71,7 @@
 
             FloatLayout:
                 DarkTextField:
-                    id: translator_main_input
+                    id: converter_main_input
                     size_hint:.8,.14
                     pos_hint: {"center_x": .5, "center_y": .88}
                     hint_text: "Введите число"
@@ -86,18 +86,18 @@
                     text:'Перевести'
                     theme_text_color: "Custom"
                     text_color: 1, 1, 1, 1
-                    on_release:root.translator_calculate()
+                    on_release:root.converter_calculate()
 
                 MDIconButton:
                     icon:'arrow-up'
                     pos_hint: {"center_x": .09, "center_y": .65}
-                    on_release: root.translator_system_input_change_value( 'left', 'up')
+                    on_release: root.converter_system_input_change_value( 'left', 'up')
                 MDIconButton:
                     icon:'arrow-down'
                     pos_hint: {"center_x": .09, "center_y": .55}
-                    on_release: root.translator_system_input_change_value( 'left', 'down')
+                    on_release: root.converter_system_input_change_value( 'left', 'down')
                 DarkTextField:
-                    id: translator_from_numeral_system_input
+                    id: converter_from_numeral_system_input
                     pos_hint: {"center_x": .29, "center_y": .6}
                     size_hint:.25,.15
                     text:'10'
@@ -111,7 +111,7 @@
 
 
                 DarkTextField:
-                    id: translator_to_numeral_system_input
+                    id: converter_to_numeral_system_input
                     pos_hint: {"center_x": .71, "center_y": .6}
                     size_hint:.25,.15
                     text:'2'
@@ -126,17 +126,17 @@
                 MDIconButton:
                     icon:'arrow-up'
                     pos_hint: {"center_x": .91, "center_y": .65}
-                    on_release: root.translator_system_input_change_value( 'right', 'up')
+                    on_release: root.converter_system_input_change_value( 'right', 'up')
                 MDIconButton:
                     icon:'arrow-down'
                     pos_hint: {"center_x": .91, "center_y": .55}
-                    on_release: root.translator_system_input_change_value( 'right', 'down')
+                    on_release: root.converter_system_input_change_value( 'right', 'down')
 
                 MDIconButton:
                     user_font_size:(dp(48), dp (48))
                     icon: "arrow-expand-horizontal"
                     pos_hint: {"center_x": .5, "center_y": .6}
-                    on_release:root.translator_button_switch_values()
+                    on_release:root.converter_button_switch_values()
 
                 MDIconButton:
                     user_font_size: "32sp"
@@ -145,14 +145,14 @@
                     pos_hint: {"center_x": .9, "center_y": .42}
                     theme_text_color: "Custom"
                     d_bg_color: app.theme_cls.primary_color
-                    on_release:root.translator_clean()
+                    on_release:root.converter_clean()
                                         
 
                 MDCard:
                     size_hint:.97,.33
                     pos_hint: {"center_x": .5, "center_y": .2}
                     MDLabel:
-                        id:translator_result_label
+                        id:converter_result_label
                         theme_text_color: "Custom"
                         text_color: 1, 1, 1, 1
                         font_style:'H5'

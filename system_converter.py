@@ -1,6 +1,6 @@
 from math import floor
 
-class NumberSystemTranslation:
+class NumberSystemConverter:
     def make_translation(self, number, system, to_system):
         try:
             self.x = number

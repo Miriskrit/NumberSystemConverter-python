@@ -11,22 +11,22 @@ from kivy.config import Config
 from kivymd.uix.card import MDCard
 from kivy.core.clipboard import Clipboard
 
-from translate import NumberSystemTranslation
+from system_converter import NumberSystemConverter
 Config.set('kivy', 'keyboard_mode', 'systemanddock')
 MAX_SYSTEM = 36
 
 
 class Container(BoxLayout):
-    translator_translator_main_input = ObjectProperty()
-    translator_from_numeral_system_input = ObjectProperty()
-    translator_to_numeral_system_input = ObjectProperty()
-    translator_translator_result_label_label = ObjectProperty()
+    converter_main_input = ObjectProperty()
+    converter_from_numeral_system_input = ObjectProperty()
+    converter_to_numeral_system_input = ObjectProperty()
+    converter_converter_result_label_label = ObjectProperty()
 
     calc_left_input = ObjectProperty()
     calc_left_system_input = ObjectProperty()
     calc_right_input = ObjectProperty()
     calc_right_system_input = ObjectProperty()
-    calc_before_translator_result_label_label = ObjectProperty()
+    calc_before_converter_result_label_label = ObjectProperty()
     calc_result_label_label = ObjectProperty()
     calc_result_system_input = ObjectProperty()
 
@@ -85,50 +85,50 @@ class Container(BoxLayout):
         return complete_formating(text_number, check_minus(text_number), definition_of_the_step(int(to_system)))
 
     #----------------------#
-    #-screen1 "translator'-#
+    #-screen1 "converter'-#
     #----------------------#
 
-    def translator_system_input_change_value(self, side, value):
+    def converter_system_input_change_value(self, side, value):
         '''increase or decrease the system input value'''
 
         # if fields is empty
         try:
             value_left_input = int(
-                self.translator_from_numeral_system_input.text)
+                self.converter_from_numeral_system_input.text)
         except:
             value_left_input = 8
         try:
             value_right_input = int(
-                self.translator_to_numeral_system_input.text)
+                self.converter_to_numeral_system_input.text)
         except:
             value_right_input = 8
 
         if side == 'left':
             if value == 'up' and value_left_input < MAX_SYSTEM:
-                self.translator_from_numeral_system_input.text = str(
+                self.converter_from_numeral_system_input.text = str(
                     value_left_input+1)
             elif value == 'down' and value_left_input > 2:
-                self.translator_from_numeral_system_input.text = str(
+                self.converter_from_numeral_system_input.text = str(
                     value_left_input-1)
         else:
             if value == 'up' and value_right_input < MAX_SYSTEM:
-                self.translator_to_numeral_system_input.text = str(
+                self.converter_to_numeral_system_input.text = str(
                     value_right_input+1)
             elif value == 'down' and value_right_input > 2:
-                self.translator_to_numeral_system_input.text = str(
+                self.converter_to_numeral_system_input.text = str(
                     value_right_input-1)
 
-    def translator_button_switch_values(self):
+    def converter_button_switch_values(self):
         '''swaps input values'''
-        self.translator_from_numeral_system_input.text, self.translator_to_numeral_system_input.text = self.translator_to_numeral_system_input.text, self.translator_from_numeral_system_input.text
+        self.converter_from_numeral_system_input.text, self.converter_to_numeral_system_input.text = self.converter_to_numeral_system_input.text, self.converter_from_numeral_system_input.text
 
-    def translator_clean(self):
-        self.translator_from_numeral_system_input.text = ''
-        self.translator_to_numeral_system_input.text = ''
-        self.translator_main_input.text = ''
-        self.translator_result_label.text = ''
+    def converter_clean(self):
+        self.converter_from_numeral_system_input.text = ''
+        self.converter_to_numeral_system_input.text = ''
+        self.converter_main_input.text = ''
+        self.converter_result_label.text = ''
 
-    def translator_calculate(self):
+    def converter_calculate(self):
         '''transfer to another number system'''
 
         def is_correct_input(t, s):
@@ -137,40 +137,40 @@ class Container(BoxLayout):
                 t = int(t)
                 s = int(s)
                 if (int(t) < 2 or int(t) > MAX_SYSTEM) or (int(s) < 2 or int(s) > MAX_SYSTEM):
-                    self.translator_result_label.text = f'[color=ff3333]Доступные системы счиления\nот 2 до {MAX_SYSTEM }[/color]'
+                    self.converter_result_label.text = f'[color=ff3333]Доступные системы счиления\nот 2 до {MAX_SYSTEM }[/color]'
                 if int(t) < 2:
-                    self.translator_to_numeral_system_input.text = '2'
+                    self.converter_to_numeral_system_input.text = '2'
                 elif int(t) > MAX_SYSTEM:
-                    self.translator_to_numeral_system_input.text = str(
+                    self.converter_to_numeral_system_input.text = str(
                         MAX_SYSTEM)
 
                 if int(s) < 2:
-                    self.translator_from_numeral_system_input.text = '2'
+                    self.converter_from_numeral_system_input.text = '2'
                 elif int(s) > MAX_SYSTEM:
-                    self.translator_from_numeral_system_input.text = str(
+                    self.converter_from_numeral_system_input.text = str(
                         MAX_SYSTEM)
                 return True
             except:
                 return False
 
         def make_mathematic():
-            user_number = self.translator_main_input.text.upper()
-            from_system = self.translator_from_numeral_system_input.text
-            to_system = self.translator_to_numeral_system_input.text
+            user_number = self.converter_main_input.text.upper()
+            from_system = self.converter_from_numeral_system_input.text
+            to_system = self.converter_to_numeral_system_input.text
             if is_correct_input(to_system, from_system):
                 try:
-                    res = NumberSystemTranslation().make_translation(
+                    res = NumberSystemConverter().make_translation(
                         user_number, from_system, to_system)
                     if res.find('[') == -1:
-                        self.translator_result_label.text = self._format_number(
+                        self.converter_result_label.text = self._format_number(
                             res, to_system) + '[sub]({})[/sub]'.format(to_system)
                     else:
-                        self.translator_result_label.text = res
+                        self.converter_result_label.text = res
                 except Exception as exc:
                     print(exc)
-                    self.translator_result_label.text = '[color=ff3333]Ошибка[/color]'
+                    self.converter_result_label.text = '[color=ff3333]Ошибка[/color]'
             else:
-                self.translator_result_label.text = '[color=ff3333]Вы не ввели число[/color]'
+                self.converter_result_label.text = '[color=ff3333]Вы не ввели число[/color]'
 
         make_mathematic()
 
@@ -201,7 +201,7 @@ class Container(BoxLayout):
             # if the response is 0, it will not be convert to another system
             number_is_null = False
             result_system = self.calc_result_system_input.text
-            Translator = NumberSystemTranslation()
+            converter = NumberSystemConverter()
 
             def do_mathematical_operation(name, isfloat, first_num, second_num):
                 self.last_do = name
@@ -222,9 +222,9 @@ class Container(BoxLayout):
 
             def count_decimal_result(mode):
                 '''converting both values to the 10'system and count'''
-                first_decimal_num = Translator.make_translation(self.calc_left_input.text.upper(),
+                first_decimal_num = converter.make_translation(self.calc_left_input.text.upper(),
                                                                 int(self.calc_left_system_input.text), 10)
-                second_decimal_num = Translator.make_translation(self.calc_right_input.text.upper(),
+                second_decimal_num = converter.make_translation(self.calc_right_input.text.upper(),
                                                                  int(self.calc_right_system_input.text), 10)
 
                 if '.' in first_decimal_num or '.' in second_decimal_num:
@@ -251,7 +251,7 @@ class Container(BoxLayout):
                                         first_decimal_num, second_decimal_num, ten_system_res)
 
                 if not number_is_null:
-                    final_res = Translator.make_translation(
+                    final_res = converter.make_translation(
                         str(ten_system_res), 10, int(result_system))
 
                     if str(final_res).find('[') == -1:
