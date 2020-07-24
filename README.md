@@ -4,8 +4,7 @@
 - contains a table with hexadecimal numbers and their binary representation.
 - The apk folder contains the file ready for your mobile device.
 
-![Screenshot_1](https://user-images.githubusercontent.com/50238538/88424844-f5572780-cdf6-11ea-8438-4dba1862deab.png)
-
+![convertappscreen](https://user-images.githubusercontent.com/50238538/88429678-b7aacc80-cdff-11ea-903b-28240cbb6422.png)
 
 Program uses Python and Kivvy, KivyMD frameworks
 
