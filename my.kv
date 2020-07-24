@@ -1,5 +1,4 @@
 #:kivy 1.11.1
-<ViewLb@MDCard>:
 
 <TabeLabel@Label>:
     text_color: 1, 1, 1, 1
@@ -19,8 +18,7 @@
             size: self.size[0], self.size[1]-1
             pos: self.pos
 
-
-
+<TooltipMDIconButton@MDIconButton+MDTooltip>:
 
 <RV>:
     viewclass: 'TabeLabel'
@@ -42,23 +40,19 @@
     required: True
 
 
-
-<TooltipMDIconButton@MDIconButton+MDTooltip>:
-
 <Container>:
-    main_input:main_text_input
-    from_system_input:from_text_input
-    to_system_input:to_text_input
-    result:result
-    button_switch:button_switch
+    translator_main_input:translator_main_input
+    translator_from_numeral_system_input:translator_from_numeral_system_input
+    translator_to_numeral_system_input:translator_to_numeral_system_input
+    translator_result_label:translator_result_label
 
     calc_left_input:calc_left_input
-    calc_left_s:calc_left_s
+    calc_left_system_input:calc_left_system_input
     calc_right_input:calc_right_input
-    calc_right_s:calc_right_s
-    calc_decision:calc_decision
-    calc_result:calc_result
-    calc_result_input:calc_result_system
+    calc_right_system_input:calc_right_system_input
+    calc_before_result_label:calc_before_result_label
+    calc_result_label:calc_result_label
+    calc_result_system_input:calc_result_system_input
 
     orientation:'vertical'
 
@@ -74,11 +68,10 @@
             name: "screen 1"
 
             FloatLayout:
-
                 DarkTextField:
+                    id: translator_main_input
                     size_hint:.8,.14
                     pos_hint: {"center_x": .5, "center_y": .88}
-                    id: main_text_input
                     hint_text: "Введите число"
                     halign:'center'
                     font_size: '30sp'
@@ -93,20 +86,16 @@
                     text_color: 1, 1, 1, 1
                     on_release:root.calculate()
 
-
-
                 MDIconButton:
-                    id: button2
                     icon:'arrow-up'
                     pos_hint: {"center_x": .09, "center_y": .65}
                     on_release: root.change_value( 'left', 'up')
                 MDIconButton:
-                    id: button2
                     icon:'arrow-down'
                     pos_hint: {"center_x": .09, "center_y": .55}
                     on_release: root.change_value( 'left', 'down')
                 DarkTextField:
-                    id: from_text_input
+                    id: translator_from_numeral_system_input
                     pos_hint: {"center_x": .29, "center_y": .6}
                     size_hint:.25,.15
                     text:'10'
@@ -120,7 +109,7 @@
 
 
                 DarkTextField:
-                    id: to_text_input
+                    id: translator_to_numeral_system_input
                     pos_hint: {"center_x": .71, "center_y": .6}
                     size_hint:.25,.15
                     text:'2'
@@ -142,14 +131,12 @@
                     on_release: root.change_value( 'right', 'down')
 
                 MDIconButton:
-                    id:button_switch
                     user_font_size:(dp(48), dp (48))
                     icon: "arrow-expand-horizontal"
                     pos_hint: {"center_x": .5, "center_y": .6}
                     on_release:root.switch()
 
                 MDIconButton:
-                    id:button_switch
                     user_font_size: "32sp"
                     user_font_size:(dp(48), dp (48))
                     icon: "delete-circle-outline"
@@ -163,7 +150,7 @@
                     size_hint:.97,.33
                     pos_hint: {"center_x": .5, "center_y": .2}
                     MDLabel:
-                        id:result
+                        id:translator_result_label
                         theme_text_color: "Custom"
                         text_color: 1, 1, 1, 1
                         font_style:'H5'
@@ -179,14 +166,14 @@
                 orientation:'vertical'
             FloatLayout:
                 DarkTextField:
+                    id: calc_left_input
                     size_hint:.4,.12
                     pos_hint: {"center_x": .25, "center_y": .9}
-                    id: calc_left_input
                     hint_text: "Введите число"
                     halign:'center'
                     font_size: '20sp'
                 DarkTextField:
-                    id: calc_left_s
+                    id: calc_left_system_input
                     text:'16'
                     size_hint:.25,.13
                     pos_hint: {"center_x": .25, "center_y": .75}
@@ -195,14 +182,14 @@
 
                 
                 DarkTextField:
+                    id: calc_right_input
                     size_hint:.4,.12
                     pos_hint: {"center_x": .75, "center_y": .9}
-                    id: calc_right_input
                     hint_text: "Введите число"
                     halign:'center'
                     font_size: '20sp'
                 DarkTextField:
-                    id: calc_right_s
+                    id: calc_right_system_input
                     text:'16'
                     size_hint:.25,.13
                     pos_hint: {"center_x": .75, "center_y": .75}
@@ -252,7 +239,7 @@
                     on_release: root.calc_change_value(1)
 
                 DarkTextField:
-                    id: calc_result_system
+                    id: calc_result_system_input
                     text:'2'
                     size_hint:.25,.11
                     pos_hint: {"center_x": .5, "center_y": .55}
@@ -274,7 +261,7 @@
                     size_hint:.95,.1
                     pos_hint: {"center_x": .5, "center_y": .32}
                     MDLabel:
-                        id:calc_decision
+                        id:calc_before_result_label
                         theme_text_color: "Custom"
                         text_color: 1, 1, 1, 1
                         font_style:'Subtitle2'
@@ -285,7 +272,7 @@
                     size_hint:.97,.2
                     pos_hint: {"center_x": .5, "center_y": .11}
                     MDLabel:
-                        id:calc_result
+                        id:calc_result_label
                         theme_text_color: "Custom"
                         text_color: 1, 1, 1, 1
                         font_style:'H5'
