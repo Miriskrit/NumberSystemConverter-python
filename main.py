@@ -7,127 +7,15 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.dropdown import DropDown
 from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
-from math import floor
 from kivy.config import Config
 from kivymd.uix.card import MDCard
 from kivy.core.clipboard import Clipboard
+
+from translate import NumberSystemTranslation
 Config.set('kivy', 'keyboard_mode', 'systemanddock')
 
 
-class Counter:
-    def main(self, number, system, to_system):
-        try:
-            self.x = number
-            self.s = int(system)
-            self.t = int(to_system)
-        except:
-            return '[color=ff3333]Ошибка при вводе[/color]'
 
-        Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        Numbers = '0123456789.'
-        Alphabet_dict = {chr(int(a)+55): a for a in range(10, 36)}
-        Alphabet_dict_to_ten = {a: chr(int(a)+55) for a in range(10, 36)}
-        main_int = []
-        minus = False
-
-        if self.x[0:1] == '-':
-            minus = True
-            self.x = self.x[1:]
-
-        for i in self.x:
-            if i in Numbers:
-                if i != '.':
-                    if int(i) >= self.s:
-                        return '[color=ff3333]Вы ввели неверное число\n или систему счисления[/color]'
-            elif i in Alphabet:
-                if Alphabet_dict[i] >= self.s:
-                    return '[color=ff3333]Вы ввели неверное число\n или систему счисления[/color]'
-            else:
-                return '[color=ff3333]Некорректный ввод[/color]'
-
-        def convert():
-            new_x = 0
-            for i in range(len(self.x)):
-                if self.x[i] in Numbers:
-                    if self.x[i] == '.':
-                        main_int.append(self.x[i])
-                    else:
-                        main_int.append(int(self.x[i]))
-                else:
-                    for j in Alphabet:
-                        if self.x[i] == j:
-                            new_x = Alphabet_dict[j]
-                            main_int.append(new_x)
-                            break
-
-        def other_to_ten():
-            cout = 0
-            cout2 = 0
-            degree = -1
-            new_main_int = []
-
-            for length in range(len(main_int)):
-                if main_int[length] != '.':
-                    new_main_int.append(main_int[length])
-                    point_pos = len(main_int)
-                else:
-                    point_pos = length
-                    break
-            new_main_int.reverse()
-            for i in range(len(new_main_int)):
-                cout = cout + new_main_int[i]*(self.s**i)
-            for i in range(point_pos + 1, len(main_int)):
-                cout2 = cout2 + main_int[i]*(self.s**degree)
-                degree -= 1
-
-            summ = cout + cout2
-            return (str(summ))
-
-        def ten_to_other(x_ten):
-            rezult = ''
-            rezult2 = ''
-            if '.' in x_ten:
-                x_ten = x_ten.split('.')
-                x = int(x_ten[0])
-                x_afterpoint = float('0.' + x_ten[1])
-                for _ in range(11):
-                    x_afterpoint *= self.t
-                    if x_afterpoint*self.t < self.t:
-                        if self.t >= 10 and floor(x_afterpoint) >= 10:
-                            rezult2 += str(
-                                Alphabet_dict_to_ten[floor(x_afterpoint)])
-                        else:
-                            rezult2 += str(floor(x_afterpoint))
-                    else:
-                        if self.t >= 10 and floor(x_afterpoint) >= 10:
-                            rezult2 += str(
-                                Alphabet_dict_to_ten[floor(x_afterpoint)])
-                        else:
-                            rezult2 += str(floor(x_afterpoint))
-                        x_afterpoint = x_afterpoint % 1
-            else:
-                x = int(x_ten)
-            while x >= 1:
-                if x % self.t <= 9:
-                    rezult += str(x % self.t)
-                else:
-                    rezult += str(Alphabet_dict_to_ten[x % self.t])
-                x = x//self.t
-            rezult = rezult[::-1]
-            rezult_final = rezult + '.' + rezult2
-            if rezult_final[-1] == '.':
-                rezult_final = rezult_final[:-1]
-            if minus == True:
-                rezult_final = '-' + rezult_final
-            return rezult_final
-
-        convert()
-        if self.s == 10:
-            rez = ten_to_other(self.x)
-        else:
-            ten = other_to_ten()
-            rez = ten_to_other(ten)
-        return rez
 
 
 class Container(BoxLayout):
@@ -234,9 +122,8 @@ class Container(BoxLayout):
             from_system = self.from_system_input.text
             to_system = self.to_system_input.text
             if is_correct_input(to_system, from_system):
-                c = Counter()
                 try:
-                    text = c.main(user_number, from_system, to_system)
+                    text = NumberSystemTranslation().make_translation(user_number, from_system, to_system)
                     if text.isdigit():
                         text = self.format_text(
                             text, to_system) + '[sub]({})[/sub]'.format(to_system)
@@ -266,52 +153,75 @@ class Container(BoxLayout):
                     self.calc_right_input.text = '1'
 
         def convert_both_to_ten():
-            c = Counter()
-            return c.main(self.calc_left_input.text.upper(), int(self.calc_left_s.text), 10), c.main(self.calc_right_input.text.upper(), int(self.calc_right_s.text), 10)
+            c = NumberSystemTranslation()
+            return c.make_translation(self.calc_left_input.text.upper(), int(self.calc_left_s.text), 10), \
+                    c.make_translation(self.calc_right_input.text.upper(), int(self.calc_right_s.text), 10)
 
         def make_mathematic():
+            
+            def mathematical_operation(name, isfloat, first_num, second_num):
+                if name == 'min':
+                    res = float(first_num)-float(second_num)
+
+                elif name == 'pls':
+                    res = float(first_num)+float(second_num)
+
+                elif name == 'mlt':
+                    res = float(first_num)*float(second_num)
+
+                else:
+                    res = round(float(first_num)/float(second_num), 5)
+                    if res == int(res):
+                        res = int(res)
+                        
+                self.last_do = name
+                
+                
+                if not isfloat:
+                    return int(res)
+                else:
+                    return res
+            
             number_is_null = False
             final_syst = self.calc_result_input.text
             first_num, second_num = convert_both_to_ten()
-            c = Counter()
+            c = NumberSystemTranslation()
             try:
-                first_num = c.main(self.calc_left_input.text.upper(),
+                first_num = c.make_translation(self.calc_left_input.text.upper(),
                                    int(self.calc_left_s.text), 10)
-                second_num = c.main(self.calc_right_input.text.upper(),
+                second_num = c.make_translation(self.calc_right_input.text.upper(),
                                     int(self.calc_right_s.text), 10)
-                if mode == 'min':
-                    self.last_do = 'min'
-                    res = int(first_num)-int(second_num)
-                    if res == 0:
+                
+                if '.' in first_num or '.' in second_num:
+                    isfloat = True
+                else:
+                    isfloat = False
+                
+                ten_system_res = mathematical_operation(mode, isfloat, first_num, second_num)
+                if ten_system_res == 0:
                         number_is_null = True
 
-                elif mode == 'pls':
-                    self.last_do = 'pls'
-                    res = int(first_num)+int(second_num)
-
-                elif mode == 'mlt':
-                    self.last_do = 'mlt'
-                    res = int(first_num)*int(second_num)
-
-                else:
-                    self.last_do = 'del'
-                    res = round(int(first_num)/int(second_num), 5)
-                    if res == int(res):
-                        res = int(res)
 
                 modes = {'min': '-', 'pls': '+', 'mlt': '*', 'del': '/'}
-                self.calc_decision.text = f'{first_num}[sub](10)[/sub] {modes.get(mode)} {second_num}[sub](10)[/sub] = {res}[sub](10)[/sub]'
+                self.calc_decision.text = f'{first_num}[sub](10)[/sub] {modes.get(mode)} {second_num}[sub](10)[/sub] = {ten_system_res}[sub](10)[/sub]'
 
                 if not number_is_null:
-                    t = str(c.main(str(res), 10, int(final_syst)))
-                    if t.find('[') == -1:
-                        self.calc_result.text = self.format_text(
-                            t, int(final_syst)) + '[sub]({})[/sub]'.format(final_syst)
+                    final_res = str(c.make_translation(str(ten_system_res), 10, int(final_syst)))
+                    if isfloat:
+                        final_res = float(final_res)
                     else:
-                        self.calc_result.text = t
+                        final_res = int(final_res)
+                        
+                    if str(final_res).find('[') == -1:
+                        self.calc_result.text = self.format_text(
+                            str(final_res), int(final_syst)) + '[sub]({})[/sub]'.format(final_syst)
+                    else:
+                        # если обнаружена ошибка
+                        self.calc_result.text = final_res
                 else:
                     self.calc_result.text = '0'
-            except:
+            except Exception as exc:
+                print(exc)
                 self.calc_result.text = '[color=ff3333]Ошибка[/color]'
 
         calc_is_correct_input()
