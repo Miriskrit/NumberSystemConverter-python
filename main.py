@@ -15,6 +15,7 @@ from translate import NumberSystemTranslation
 Config.set('kivy', 'keyboard_mode', 'systemanddock')
 MAX_SYSTEM = 36
 
+
 class Container(BoxLayout):
     translator_translator_main_input = ObjectProperty()
     translator_from_numeral_system_input = ObjectProperty()
@@ -103,14 +104,14 @@ class Container(BoxLayout):
             value_right_input = 8
 
         if side == 'left':
-            if value == 'up' and value_left_input < MAX_SYSTEM :
+            if value == 'up' and value_left_input < MAX_SYSTEM:
                 self.translator_from_numeral_system_input.text = str(
                     value_left_input+1)
             elif value == 'down' and value_left_input > 2:
                 self.translator_from_numeral_system_input.text = str(
                     value_left_input-1)
         else:
-            if value == 'up' and value_right_input < MAX_SYSTEM :
+            if value == 'up' and value_right_input < MAX_SYSTEM:
                 self.translator_to_numeral_system_input.text = str(
                     value_right_input+1)
             elif value == 'down' and value_right_input > 2:
@@ -135,17 +136,19 @@ class Container(BoxLayout):
             try:
                 t = int(t)
                 s = int(s)
-                if (int(t) < 2 or int(t) > MAX_SYSTEM ) or (int(s) < 2 or int(s) > MAX_SYSTEM ):
+                if (int(t) < 2 or int(t) > MAX_SYSTEM) or (int(s) < 2 or int(s) > MAX_SYSTEM):
                     self.translator_result_label.text = f'[color=ff3333]Доступные системы счиления\nот 2 до {MAX_SYSTEM }[/color]'
                 if int(t) < 2:
                     self.translator_to_numeral_system_input.text = '2'
-                elif int(t) > MAX_SYSTEM :
-                    self.translator_to_numeral_system_input.text = str(MAX_SYSTEM)
+                elif int(t) > MAX_SYSTEM:
+                    self.translator_to_numeral_system_input.text = str(
+                        MAX_SYSTEM)
 
                 if int(s) < 2:
                     self.translator_from_numeral_system_input.text = '2'
-                elif int(s) > MAX_SYSTEM :
-                    self.translator_from_numeral_system_input.text = str(MAX_SYSTEM)
+                elif int(s) > MAX_SYSTEM:
+                    self.translator_from_numeral_system_input.text = str(
+                        MAX_SYSTEM)
                 return True
             except:
                 return False
@@ -159,8 +162,9 @@ class Container(BoxLayout):
                     res = NumberSystemTranslation().make_translation(
                         user_number, from_system, to_system)
                     if res.find('[') == -1:
-                        self.translator_result_label.text = self._format_number(res, to_system) + '[sub]({})[/sub]'.format(to_system)
-                    else: 
+                        self.translator_result_label.text = self._format_number(
+                            res, to_system) + '[sub]({})[/sub]'.format(to_system)
+                    else:
                         self.translator_result_label.text = res
                 except Exception as exc:
                     print(exc)
@@ -184,7 +188,7 @@ class Container(BoxLayout):
                     i = int(txtinput.text)
                     if i < 2:
                         txtinput.text = '2'
-                    if i > MAX_SYSTEM :
+                    if i > MAX_SYSTEM:
                         txtinput.text = str(MAX_SYSTEM)
                 except:
                     txtinput.text = '10'
